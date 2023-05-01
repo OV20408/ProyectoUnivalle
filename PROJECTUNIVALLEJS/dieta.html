@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Food Search</title>
+	<style>
+  .search-container {
+	margin-top: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#search-bar {
+	padding: 10px;
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	width: 500px;
+}
+
+#search-button {
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+#result-container {
+	margin-top: 50px;
+	display: none;
+}
+	</style>
+</head>
+<body>
+	<h1>Que puedo Comer</h1>
+	<div class="search-container">
+		<input type="text" id="search-bar" placeholder="Enter ingredients you have...">
+		<button onclick="search()">Search</button>
+	</div>
+	<ul id="output">
+		<!-- This list will be generated dynamically by JavaScript -->
+	</ul>
+	<script>
+		const dishes = [
+			{
+				name: 'Spaghetti with Meatballs',
+				ingredients: ['spaghetti', 'ground beef', 'tomato sauce', 'breadcrumbs', 'egg', 'garlic', 'onion', 'olive oil', 'salt', 'pepper']
+			},
+			{
+				name: 'Stir Fry Beef and Vegetables',
+				ingredients: ['beef', 'broccoli', 'carrots', 'mushrooms', 'onion', 'soy sauce', 'sesame oil', 'cornstarch', 'garlic', 'ginger']
+			},
+			{
+				name: 'Chicken Fajitas',
+				ingredients: ['chicken', 'bell peppers', 'onion', 'lime', 'chili powder', 'cumin', 'garlic', 'salt', 'pepper', 'tortillas']
+			},
+			{
+				name:["omelette", "pancakes", "waffles", "muffins", "brownies", "cookies", "cake", "french toast", "scrambled eggs", "fried eggs", "boiled eggs", "omelette with spinach and mushroom", "pancakes with bacon and eggs", "waffles with strawberries and whipped cream", "muffins with blueberries", "brownies with nuts", "chocolate chip cookies", "vanilla cake with frosting", "lemon cake with glaze", "garlic bread", "caprese salad", "spinach and mushroom quiche", "cheeseburger", "BLT sandwich", "chicken sandwich", "pork chops", "beef stroganoff", "spaghetti with meatballs", "pork chops with mashed potatoes", "roast beef with vegetables", "chicken parmesan", "shepherd's pie", "beef stew", "chicken curry", "chili con carne", "baked potato with toppings", "beef stir fry with broccoli and carrots", "chicken alfredo pasta", "vegetable stir fry with bell peppers and green beans", "shepherd's pie with peas and carrots", "beef and vegetable soup", "chicken and vegetable curry", "fried rice with egg and vegetables", "baked chicken with potatoes and carrots", "grilled steak with green beans and garlic butter", "pasta with tomato sauce and basil", "roasted vegetables with thyme and oregano", "grilled fish with lemon juice and parsley", "meatballs in tomato sauce", "beef and vegetable kabobs with soy sauce marinade", "BBQ chicken with honey and hot sauce", "caesar salad with chicken and croutons", "tuna salad with mayonnaise and mustard", "turkey sandwich with lettuce, tomato, and mayo", "hamburgers with ketchup and pickles"],
+
+				ingredients: ["eggs", "milk", "flour", "sugar", "butter", "salt", "pepper", "onion", "garlic", "tomato", "spinach", "mushroom", "cheese", "bacon", "sausage", "ham", "chicken", "beef", "pork", "fish", "shrimp", "rice", "potatoes", "carrots", "broccoli", "cauliflower", "green beans", "peas", "corn", "bell peppers", "cilantro", "parsley", "basil", "thyme", "oregano", "paprika", "cinnamon", "nutmeg", "cloves", "bay leaves", "soy sauce", "Worcestershire sauce", "honey", "lemon juice", "lime juice", "vinegar", "mayonnaise", "mustard", "ketchup", "BBQ sauce", "hot sauce"]
+			},
+			{
+				name:["asparagus", "avocado", "black beans", "broccoli", "brown rice", "carrots", "chicken breast", "cilantro", "cumin", "cucumber", "garlic", "ginger", "ground turkey", "lemon juice", "lime juice", "mixed vegetables", "olive oil", "onion", "peppers", "quinoa", "salsa", "salt", "snow peas", "sweet potatoes", "tomato sauce", "tortillas", "zucchini"],
+				ingredients:["BBQ chicken with honey and hot sauce", "BLT sandwich", "baked chicken with potatoes and carrots", "baked potato with toppings", "beef and vegetable kabobs with soy sauce marinade", "beef and vegetable soup", "beef stroganoff", "black bean and sweet potato tacos", "brownies", "caesar salad with chicken and croutons", "cake", "caprese salad", "chicken alfredo pasta", "chicken and vegetable stir fry with brown rice", "chicken curry", "chicken sandwich", "chicken parmesan", "chili con carne", "cheeseburger", "cookies", "fried eggs", "fried rice with egg and vegetables", "french toast", "garlic bread", "grilled fish with lemon juice and parsley", "grilled salmon with asparagus and lemon juice", "grilled steak with green beans and garlic butter", "hamburgers with ketchup and pickles", "lemon cake with glaze", "meatballs in tomato sauce", "mixed vegetable quinoa salad", "muffins", "omelette", "omelette with spinach and mushroom", "pancakes", "pancakes with bacon and eggs", "pasta with tomato sauce and basil", "pork chops", "pork chops with mashed potatoes", "quinoa salad with mixed vegetables", "roast beef with vegetables", "roasted vegetables with thyme and oregano", "scrambled eggs", "shepherd's pie", "shepherd's pie with peas and carrots", "spaghetti with meatballs", "spinach and mushroom quiche", "turkey chili with black beans and vegetables", "turkey sandwich with lettuce, tomato, and mayo", "tuna salad with mayonnaise and mustard", "vanilla cake with frosting", "vegetable stir fry with bell peppers and green beans", "waffles", "waffles with strawberries and whipped cream"]
+			},
+			// Add more dishes here
+		];
+
+		function search() {
+			const input = document.getElementById('search-bar').value.toLowerCase();
+			const ingredients = input.split(',');
+			const result = [];
+
+			for (let i = 0; i < dishes.length; i++) {
+				let count = 0;
+				for (let j = 0; j < ingredients.length; j++) {
+					if (dishes[i].ingredients.includes(ingredients[j].trim())) {
+						count++;
+					}
+				}
+				if (count === ingredients.length) {
+					result.push(dishes[i].name);
+				}
+			}
+
+			const output = document.getElementById('output');
+			output.innerHTML = '';
+
+			if (result.length > 0) {
+				for (let i = 0; i < result.length; i++) {
+					const listItem = document.createElement('li');
+					listItem.innerText = result[i];
+					output.appendChild(listItem);
+				}
+			} else {
+				const message = document.createElement('p');
+				message.innerText = 'No dishes found with these ingredients';
+				output.appendChild(message);
+			}
+		}
+	</script>
+</body>
+</html>
